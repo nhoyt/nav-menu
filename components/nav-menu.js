@@ -1,6 +1,6 @@
 import {LitElement, html, css} from 'lit';
 
-class MyElement extends LitElement {
+class NavMenu extends LitElement {
 
   static properties = {
     name: {},
@@ -42,4 +42,4 @@ class MyElement extends LitElement {
   }
 }
 
-customElements.define('my-element', MyElement);
+customElements.define('nav-menu', NavMenu);
