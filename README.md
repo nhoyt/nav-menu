@@ -62,16 +62,13 @@ Content model: `(menu-item | menu-separator)+`
 * An object that separates, and optionally labels, the group of `menu-item`
   components that follow it within a `sub-menu`.
 
-* A separator, whether it has a label or is only a graphical indicator, is not
-  focusable.
-
-* It will be marked up as an `li` with role="separator" (overrides its default
-  role)
+* It will be marked up as an `li` element with role="separator" (overrides its
+  default role)
 
 Attributes: none
 
 Content model: `(CDATA)*` - Text describing the `menu-item` components that
-follow. It text is omitted, the separator will be rendered graphically as a
+follow. If text is omitted, the separator will be rendered graphically as a
 horizontal line.
 
 ## Styling / Implementation Notes
@@ -110,6 +107,8 @@ horizontal line.
 ### menu-separator
 
 * Marked up as an `li` element with optional text content, and role="separator".
+
+* A `menu-separator`, with or without text content, is not focusable.
 
 * When `menu-separator` component does not have text content, it is rendered
   as a visual separator such as a horizontal line.
