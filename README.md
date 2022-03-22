@@ -1,29 +1,22 @@
 # Component Design
 
 ## nav-menu
-
 * The top-level container for a disclosure navigation menu system
 
 Attributes:
+* `label` - text describing the menu's purpose (not visually rendered)
 
-* `label` - text describing the menu's purpose (will be used as `aria-label`)
-
-Content model:
-
-* (`menu-item`)+
+Content model: `(menu-item | menu-separator)+`
 
 ## menu-item
-
 * Container for `menu-button`, `sub-menu` components and `a` elements
+* Child of `nav-menu` and `sub-menu` components
 
-* Child of `nav-menu`, `sub-menu` and `menu-group` components
+Attributes: none
 
-Content model:
-
-* `(menu-button, sub-menu) | (a)+`
+Content model: `( (a)+ | (menu-button, sub-menu)+ | (a, menu-button, sub-menu)+ )+`
 
 Example
-
 ```
 <menu-item>
   <menu-button>Button label</menu-button>
@@ -39,18 +32,17 @@ Example
 ```
 
 ## menu-button
-
 * A focusable component within a `menu-item` with disclosure button behavior.
 
 * When activated, it toggles the visibility of the `sub-menu` that immediately
   follows it.
 
-Content model:
+Attributes: none
 
+Content model:
 * `(CDATA)+` - button label describing the `sub-menu` that it controls
 
 ## sub-menu
-
 * A container for `menu-item` or `menu-group` components
 
 * Must immediately follow the `menu-button` that controls it (the `sub-menu`)
@@ -61,80 +53,67 @@ Content model:
 * When groupings of `menu-item` components are needed, a `sub-menu` can contain
   `menu-group` components (usually two or more).
 
-Content model:
+Attributes: none
 
-* `(menu-item)+ | (menu-group)+`
+Content model: `(menu-item | menu-separator)+`
 
-## menu-group
+## menu-separator
 
-* A container for grouping `menu-item` components within a `sub-menu`
+* An object that separates, and optionally labels, the group of `menu-item`
+  components that follow it within a `sub-menu`.
 
-* It may have an optional label.
+* A separator, whether it has a label or is only a graphical indicator, is not
+  focusable.
 
-* When there are multiple `menu-group` components within a `sub-menu`,
-  groupings are indicated (rendered) by the use of separators.
+* It will be marked up as an `li` with role="separator" (overrides its default
+  role)
 
-* When a `menu-group` has a label, it serves as the separator for the group.
+Attributes: none
 
-* A separator, whether it is a label or a graphical indicator, is not focusable.
+Content model: `(CDATA)*` - Text describing the `menu-item` components that
+follow. It text is omitted, the separator will be rendered graphically as a
+horizontal line.
 
-Attributes:
-
-* `label` - text describing the `menu-group` (will be marked up as an `li` with
-   role="separator")
-
-Content model:
-
-* `(menu-item)+`
-
-## Styling Notes
+## Styling / Implementation Notes
 
 * When a `menu-item` is a descendant of `nav-menu`, it is styled differently
   than when it is a descendant of a `sub-menu`.
-
-## Implementation Notes
 
 ### nav-menu
 
 * Must have an ARIA role of `navigation` (e.g., use `nav` element).
 
-* Its required label is typically hidden visually by being marked up using the
-  `aria-label` attribute.
+* Its required `label` attribute is typically hidden visually by being marked
+  up using the `aria-label` attribute.
 
-* Its `menu-item` descendants should be wrapped in a single list element.
+* Its `menu-item` descendants should be wrapped in a single list element such
+  as `ul`.
 
 ### menu-button
 
-* Must have an ARIA role of `button`. Typically marked up as an `a` element.
+* Must have an ARIA role of `button`. Typically marked up as an `a` element
+  within an `li` element.
 
 * Must have an `aria-controls` attribute with an IDREF value indicating the
- `menu-panel` it controls.
+ `sub-menu` it controls.
 
-* Must have an `aria-expanded` attribute with value of `true` or `false`.
+* Must have an `aria-expanded` attribute with value of `true` or `false`,
+  indicating whether the `sub-menu` it controls is visible or not.
 
 ### sub-menu
 
-* Marked up as a list element within an `li` element.
+* Marked up as a list element (`ul`) within an `li` element.
 
 * Its visibility is controlled via CSS using `display: none` and
   `display: block`.
 
-* When it contains unlabeled `menu-group` components, visual separators are
-  inserted.
+### menu-separator
 
-### menu-group
+* Marked up as an `li` element with optional text content, and role="separator".
 
-* Marked up as an `li` element with only text content.
+* When `menu-separator` component does not have text content, it is rendered
+  as a visual separator such as a horizontal line.
 
-* Its `menu-button` and `menu-item` descendants should be wrapped in a list
-  element.
-
-* When it has a label, it should be marked up as a `div` element and have the
-  ARIA role `separator`.
-
-* When it has a label the `aria-describedby` attribute should be used on the
-  list element to point to the separator div.
-
-* The best practice for using labeled vs. unlabeled `menu-group` components
-  is that you should not mix and match. Within a `menu-panel`, all of the
-  `menu-group` components should either have labels or not have them.
+* The best practice for using `menu-separator` components with or without text
+  content is that you should not mix and match. Within a `sub-menu`, all of the
+  `menu-separator` components should either have text content or not.
