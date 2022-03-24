@@ -4,7 +4,7 @@
 
 * The content model for each element is expressed in both DTD and RELAX NG
   syntax.
-* The RELAX NG keywords used are `element`, `attribute` and `text`.
+* The RELAX NG keywords used are `element`, `attribute`, `text`, and `empty`.
 
 ## Named Patterns
 
@@ -119,9 +119,9 @@ _optional_ `href` attribute.
 ### sub-menu
 
 #### Description
-* A container for `menu-item` components
+* A container for `menu-item` and _optional_ `menu-separator` elements.
 
-* Must immediately follow the `menu-button` that controls it (the `sub-menu`)
+* Must immediately follow the `menu-button` with which it is associated.
 
 * A `sub-menu` is initially hidden until the `menu-button` that controls it is
   activated.
@@ -145,24 +145,25 @@ pattern: an _optional_ `menu-separator` element followed by one or more
 ### menu-separator
 
 #### Description
-* An object that separates groups of `menu-item` components within a `sub-menu`
-  (or `nav-menu`). If the `menu-separator` contains text, its purpose is to label
-  the group of `menu-item` components that follow it.
+* A `menu-separator` is used to separates groups of `menu-item` elements within
+  a `sub-menu` or `nav-menu`. If the `menu-separator` has a `label` attribute,
+  its text should describe the group of `menu-item` elements that follow it.
 
-* If text is omitted, the separator will be rendered graphically as a
-  horizontal or vertical line, depending on menu orientation.
+* If the `label` attribute is omitted, the separator will be rendered
+  graphically as a horizontal or vertical line (depending on menu orientation).
 
 #### Content model
 ```
 <!ELEMENT menu-separator (PCDATA)*>
 
 element menu-separator {
-  attribute label { text }?
+  attribute label { text }?,
+  empty
 }
 ```
 
-_In English:_ A `menu-separator` component has no text or element content, and
-may have an _optional_ `label` attribute.
+_In English:_ A `menu-separator` may have an _optional_ `label` attribute, but
+otherwise has no text or element content.
 
 ## Styling / Implementation Notes
 
