@@ -6,14 +6,43 @@
   syntax.
 * The RELAX NG keywords used are `element`, `attribute` and `text`.
 
+## Named Patterns
+
+The RELAX NG content models use the following named patterns:
+
+```
+a-element = element a {
+  attribute href { text },
+  text
+}
+
+menu-button-element = element menu-button {
+  attribute href { text }?,
+  text
+}
+
+menu-separator-element = element menu-separator {
+  attribute label { text }?,
+  empty
+}
+
+menu-item-element = element menu-item {
+  a-element | ( menu-button-element, sub-menu-element )
+}
+
+sub-menu-element = element sub-menu {
+  menu-separator-element?, menu-item-element+
+}+
+```
+
 ## Components
 
 ### nav-menu
 
 #### Description
-* The top-level container for a disclosure navigation menu system
-* Its required `label` attribute specifies the value for `aria-label` (i.e.
-  it is not visually rendered).
+* The top-level container for a disclosure navigation menu system.
+* Its required `label` attribute specifies the value for `aria-label` (it is
+  not visually rendered).
 
 #### Content model
 ```
@@ -22,22 +51,17 @@
 
 element nav-menu {
   attribute label { text },
-  ( element menu-separator { text? }?,
-    element menu-item {
-      element a { aContent }
-      | ( element menu-button { menuButtonContent },
-          element sub-menu { subMenuContent } )
-  )+
+  ( menu-separator-element?, menu-item-element+ )+
 }
 ```
-_In English:_ A `nav-menu` must contain one or more instances of the following
-pattern: an _optional_ `menu-separator` followed by one or more `menu-item`
-components; additionally, it must have a `label` attribute.
+_In English:_ A `nav-menu` must have a `label` attribute and must contain one
+or more instances of the following sequence: an _optional_ `menu-separator`
+element followed by one or more `menu-item` elements.
 
 ### menu-item
 
 #### Description
-* Container for `menu-button`, `sub-menu` components and `a` elements
+* Container for `menu-button`, `sub-menu` and `a` elements
 * Child of `nav-menu` and `sub-menu` components
 
 #### Content model
@@ -45,15 +69,12 @@ components; additionally, it must have a `label` attribute.
 <!ELEMENT menu-item (a | (menu-button, sub-menu))>
 
 element menu-item {
-  element a { aContent }
-  | ( element menu-button { menuButtonContent },
-      element sub-menu { subMenuContent } )
+  a-element | ( menu-button-element, sub-menu-element )
 }
 ```
 
 _In English:_ A `menu-item` may contain _either_ an `a` element _or_ the
-following sequence: a `menu-button` component followed by a `sub-menu`
-component.
+following sequence: a `menu-button` element followed by a `sub-menu` element.
 
 
 #### Example
@@ -88,7 +109,7 @@ component.
 
 element menu-button {
   attribute href { text }?,
-  text    # button label
+  text
 }
 ```
 
@@ -105,25 +126,21 @@ _optional_ `href` attribute.
 * A `sub-menu` is initially hidden until the `menu-button` that controls it is
   activated.
 
-* When groupings of `menu-item` components are needed, a `sub-menu` can contain
-  `menu-separator` components (usually two or more).
+* When groupings of `menu-item` elements are needed, a `sub-menu` can contain
+  `menu-separator` elements (usually two or more).
 
 #### Content model
 ```
 <!ELEMENT sub-menu ( (menu-separator?, menu-item+)+ )>
 
 element sub-menu {
-  element menu-separator { text? }?,
-  element menu-item {
-    element a { aContent }
-    | ( element menu-button { menuButtonContent },
-        element sub-menu { subMenuContent } )
+  menu-separator-element?, menu-item-element+
 }+
 ```
 
 _In English:_ A `sub-menu` must contain one or more instances of the following
-pattern: an _optional_ `menu-separator`, which may have _optional_ text
-content, followed by one or more `menu-item` components.
+pattern: an _optional_ `menu-separator` element followed by one or more
+`menu-item` elements.
 
 ### menu-separator
 
@@ -137,13 +154,15 @@ content, followed by one or more `menu-item` components.
 
 #### Content model
 ```
-<!ELEMENT menu-separator (PCDATA)*>            # DTD
+<!ELEMENT menu-separator (PCDATA)*>
 
-element menu-separator { text? }               # RELAX NG
+element menu-separator {
+  attribute label { text }?
+}
 ```
 
-_In English:_ A `menu-separator` component may have _optional_ text content
-_or_ be empty.
+_In English:_ A `menu-separator` component has no text or element content, and
+may have an _optional_ `label` attribute.
 
 ## Styling / Implementation Notes
 
@@ -201,9 +220,10 @@ _or_ be empty.
 
 * A `menu-separator`, with or without text content, is not focusable.
 
-* When `menu-separator` component does not have text content, it is rendered
-  as a visual separator such as a horizontal or vertical line.
+* When `menu-separator` component does not have a `label` attribute, it is
+  rendered as a visual separator such as a horizontal or vertical line.
 
-* The best practice for using `menu-separator` components with or without text
-  content is that you should not mix and match. Within a `sub-menu`, all of the
-  `menu-separator` components should either have text content or not.
+* The best practice for using `menu-separator` components with or without a
+  `label` attribute is that you should not mix and match. Within a `sub-menu`,
+   all of the `menu-separator` components should either have a `label`
+   attribute or not.
