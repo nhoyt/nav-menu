@@ -1,5 +1,11 @@
 # Component Design
 
+## Notes
+
+* The content model for each element is expressed in both DTD and RELAX NG
+  syntax.
+* The RELAX NG keywords used are `element`, `attribute` and `text`.
+
 ## nav-menu
 * The top-level container for a disclosure navigation menu system
 
@@ -8,13 +14,29 @@ Attributes:
 
 Content model: `(menu-item | menu-separator)+`
 
+```
+element nav-menu {
+  attribute label { text },    # value for aria-label
+  subMenuContent
+}
+```
+
 ## menu-item
 * Container for `menu-button`, `sub-menu` components and `a` elements
 * Child of `nav-menu` and `sub-menu` components
 
 Attributes: none
 
-Content model: `( (a)+ | (menu-button, sub-menu)+ | (a, menu-button, sub-menu)+ )+`
+Content model: `( a | (menu-button, sub-menu) )`
+
+```
+element menu-item { menuItemContent }
+
+menuItemContent =
+  element a { aContent }    # HTML 'a' element
+  | ( element menu-button { menuButtonContent },
+      element sub-menu { subMenuContent } )
+```
 
 Example
 ```
@@ -37,13 +59,20 @@ Example
 * When activated, it toggles the visibility of the `sub-menu` that immediately
   follows it.
 
-Attributes: none
+Attributes: href
 
 Content model:
-* `(CDATA)+` - button label describing the `sub-menu` that it controls
+* `(PCDATA)+` - button label describing the `sub-menu` that it controls
+
+```
+element menu-button {
+  attribute href { text },
+  text    # button label
+}
+```
 
 ## sub-menu
-* A container for `menu-item` or `menu-group` components
+* A container for `menu-item` components
 
 * Must immediately follow the `menu-button` that controls it (the `sub-menu`)
 
@@ -51,25 +80,36 @@ Content model:
   activated.
 
 * When groupings of `menu-item` components are needed, a `sub-menu` can contain
-  `menu-group` components (usually two or more).
+  `menu-separator` components (usually two or more).
 
 Attributes: none
 
 Content model: `(menu-item | menu-separator)+`
 
+```
+element sub-menu { subMenuContent }
+
+subMenuContent =
+  ( element menu-item { menuItemContent } | element menu-separator { text }? )+
+
+```
+
 ## menu-separator
 
-* An object that separates, and optionally labels, the group of `menu-item`
-  components that follow it within a `sub-menu`.
+* An object that separates groups of `menu-item` components within a `sub-menu`
+  (or `nav-menu`). If the `menu-separator` contains text, its purpose is to label
+  the group of `menu-item` components that follow it.
 
-* It will be marked up as an `li` element with role="separator" (overrides its
-  default role)
+* If text is omitted, the separator will be rendered graphically as a
+  horizontal (or vertical) line.
 
 Attributes: none
 
-Content model: `(CDATA)*` - Text describing the `menu-item` components that
-follow. If text is omitted, the separator will be rendered graphically as a
-horizontal line.
+Content model: `(PCDATA)*`
+
+```
+element menu-separator { text }?    # describes group of menu-items that follow
+```
 
 ## Styling / Implementation Notes
 
@@ -106,12 +146,13 @@ horizontal line.
 
 ### menu-separator
 
-* Marked up as an `li` element with optional text content, and role="separator".
+* Marked up as an `li` element with optional text content, and
+  `role="separator"`, which overrides the `li` default role.
 
 * A `menu-separator`, with or without text content, is not focusable.
 
 * When `menu-separator` component does not have text content, it is rendered
-  as a visual separator such as a horizontal line.
+  as a visual separator such as a horizontal or vertical line.
 
 * The best practice for using `menu-separator` components with or without text
   content is that you should not mix and match. Within a `sub-menu`, all of the
