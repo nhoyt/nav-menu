@@ -17,16 +17,22 @@
 
 #### Content model
 ```
-<!ELEMENT nav-menu ((menu-item | menu-separator)+)>
+<!ELEMENT nav-menu ( (menu-separator?, menu-item+)+ )>
 <!ATTLIST nav-menu label CDATA #REQUIRED>
-```
 
-```
 element nav-menu {
-  attribute label { text },    # value for aria-label
-  subMenuContent
+  attribute label { text },
+  ( element menu-separator { text? }?,
+    element menu-item {
+      element a { aContent }
+      | ( element menu-button { menuButtonContent },
+          element sub-menu { subMenuContent } )
+  )+
 }
 ```
+_In English:_ A `nav-menu` must contain one or more instances of the following
+pattern: an _optional_ `menu-separator` followed by one or more `menu-item`
+components; additionally, it must have a `label` attribute.
 
 ### menu-item
 
@@ -37,16 +43,18 @@ element nav-menu {
 #### Content model
 ```
 <!ELEMENT menu-item (a | (menu-button, sub-menu))>
-```
 
-```
-element menu-item { menuItemContent }
-
-menuItemContent =
-  element a { aContent }    # HTML 'a' element
+element menu-item {
+  element a { aContent }
   | ( element menu-button { menuButtonContent },
       element sub-menu { subMenuContent } )
+}
 ```
+
+_In English:_ A `menu-item` may contain _either_ an `a` element _or_ the
+following sequence: a `menu-button` component followed by a `sub-menu`
+component.
+
 
 #### Example
 ```
@@ -77,14 +85,15 @@ menuItemContent =
 ```
 <!ELEMENT menu-button (PCDATA)>
 <!ATTLIST menu-button href CDATA #IMPLIED>
-```
 
-```
 element menu-button {
   attribute href { text }?,
   text    # button label
 }
 ```
+
+_In English:_ A `menu-button` must contain text content, and may have an
+_optional_ `href` attribute.
 
 ### sub-menu
 
@@ -101,16 +110,20 @@ element menu-button {
 
 #### Content model
 ```
-<!ELEMENT sub-menu (menu-item+ | menu-separator)+>
+<!ELEMENT sub-menu ( (menu-separator?, menu-item+)+ )>
+
+element sub-menu {
+  element menu-separator { text? }?,
+  element menu-item {
+    element a { aContent }
+    | ( element menu-button { menuButtonContent },
+        element sub-menu { subMenuContent } )
+}+
 ```
 
-```
-element sub-menu { subMenuContent }
-
-subMenuContent =
-  ( element menu-item { menuItemContent }+ | element menu-separator { text }? )+
-
-```
+_In English:_ A `sub-menu` must contain one or more instances of the following
+pattern: an _optional_ `menu-separator`, which may have _optional_ text
+content, followed by one or more `menu-item` components.
 
 ### menu-separator
 
@@ -120,16 +133,17 @@ subMenuContent =
   the group of `menu-item` components that follow it.
 
 * If text is omitted, the separator will be rendered graphically as a
-  horizontal (or vertical) line.
+  horizontal or vertical line, depending on menu orientation.
 
 #### Content model
 ```
-<!ELEMENT menu-separator (PCDATA)*>
+<!ELEMENT menu-separator (PCDATA)*>            # DTD
+
+element menu-separator { text? }               # RELAX NG
 ```
 
-```
-element menu-separator { text }?    # describes group of menu-items that follow
-```
+_In English:_ A `menu-separator` component may have _optional_ text content
+_or_ be empty.
 
 ## Styling / Implementation Notes
 
@@ -146,6 +160,16 @@ element menu-separator { text }?    # describes group of menu-items that follow
 * Its required `label` attribute provides the value for an `aria-label`
   attribute on the `nav` element.
 
+### menu-item
+
+* _Marked up as_ an `li` element.
+
+* A `menu-item` may contain either a single `a` element or a `menu-button`
+  followed by a `sub-menu`.
+
+* In the latter case, the `menu-button` will need to reference, via its
+  `aria-controls` attribute, the `sub-menu` that immediately follows it.
+
 ### menu-button
 
 * _Marked up as_ an `a` element with `role="button"` within an `li` element
@@ -159,10 +183,13 @@ element menu-separator { text }?    # describes group of menu-items that follow
 
 ### sub-menu
 
-* _Marked up as_ a list element (`ul`) within an `li` element.
+* Child of `menu-item`.
 
-* The `menu-button` that controls this `sub-menu` it the `menu-button` that
-  immediately precedes it.
+* _Marked up as_ a list element (`ul`) within an `li` element. It will need
+  an `id` attribute to which the controlling `menu-button` can refer.
+
+* The `menu-button` that that immediately precedes the `sub-menu` within the
+  `menu-item` is the `menu-button` that controls it.
 
 * The visibility of the `sub-menu` is controlled via CSS using `display: none`
   and `display: block`.
