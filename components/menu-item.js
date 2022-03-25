@@ -5,9 +5,10 @@ class MenuItem extends LitElement {
     li {
       display: inline;
       list-style: none;
-      border: 2px solid blue;
+      border-radius: 6px;
+      border:2px solid blue;
       margin-left: 8px;
-      padding: 4px;
+      padding: 4px 8px;
     }
   `;
 
