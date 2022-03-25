@@ -154,7 +154,8 @@ pattern: an _optional_ `menu-separator` element followed by one or more
 
 #### Content model
 ```
-<!ELEMENT menu-separator (PCDATA)*>
+<!ELEMENT menu-separator EMPTY>
+<!ATTLIST menu-separator label CDATA #IMPLIED>
 
 element menu-separator {
   attribute label { text }?,
@@ -163,7 +164,7 @@ element menu-separator {
 ```
 
 _In English:_ A `menu-separator` may have an _optional_ `label` attribute, but
-otherwise has no text or element content.
+otherwise is empty, i.e. it has no text or element content.
 
 ## Styling / Implementation Notes
 
