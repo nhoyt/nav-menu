@@ -173,13 +173,13 @@ otherwise is empty, i.e. it has no text or element content.
 
 ### nav-menu
 
-* _Marked up as_ `nav` element that contains a `ul` element, which in turn
+* _Marked up as_ a `nav` element that contains a `ul` element, which in turn
   contains `menu-item` and optional `menu-separator` elements.
 
-* Must have an ARIA role of `navigation` (default role of `nav` element).
+* Must have an ARIA role of `navigation` (the default role of `nav` element).
 
-* Its required `label` attribute provides the value for an `aria-label`
-  attribute on the `nav` element.
+* The value of its required `label` attribute is used as the value of the
+  `aria-label` attribute placed on the rendered `nav` element.
 
 ### menu-item
 
@@ -193,8 +193,21 @@ otherwise is empty, i.e. it has no text or element content.
 
 ### menu-button
 
-* _Marked up as_ an `a` element with `role="button"` within an `li` element
-  that also contains a `sub-menu` element immediately following `menu-button`.
+* A `menu-button` element can be _either_ a plain button or a split button.
+
+#### Plain button (does not have an `href` attribute)
+* _Marked up as_ an `a` element with `role="button"`; it should be the first
+  child of its parent `li` element.
+
+#### Split button (has an `href` attribute)
+* _Marked up as_ an `a` element followed by a `button type="image"` within a
+  `div` container; the `div` should be the first child of its parent `li`
+  element.
+
+* The `sub-menu` element that immediately follows the `menu-button` within the
+  `menu-item` must be programmatically associated with the `button` component
+  of the `menu-button` (either the `a` element with `role="button"` of a plain
+  button, or the `button type="image"` element of a split button.
 
 * The `a` element must have an `aria-controls` attribute with an IDREF value
   referencing the `sub-menu` it controls.
@@ -206,11 +219,11 @@ otherwise is empty, i.e. it has no text or element content.
 
 * Child of `menu-item`.
 
-* _Marked up as_ a list element (`ul`) within an `li` element. It will need
-  an `id` attribute to which the controlling `menu-button` can refer.
+* _Marked up as_ a `ul` element within an `li` element. It will need an auto-
+  generated `id` attribute to which the controlling `menu-button` can refer.
 
 * The `menu-button` that that immediately precedes the `sub-menu` within the
-  `menu-item` is the `menu-button` that controls it.
+  parent `menu-item` is the `menu-button` that controls it.
 
 * The visibility of the `sub-menu` is controlled via CSS using `display: none`
   and `display: block`.
