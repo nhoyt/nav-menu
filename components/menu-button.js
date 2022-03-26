@@ -20,7 +20,6 @@ export default class MenuButton extends LitElement {
 
   set menuItem (element) {
     this._menuItem = element;
-    console.log(`element: ${element.tagName}`);
   }
 
   get subMenu () {
@@ -29,7 +28,6 @@ export default class MenuButton extends LitElement {
 
   set subMenu (element) {
     this._subMenu = element;
-    console.log(`element: ${element.tagName}`);
   }
 
   toggleSubMenu () {

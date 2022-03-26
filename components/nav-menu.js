@@ -26,12 +26,10 @@ class NavMenu extends LitElement {
     const children = this.slottedChildren;
     for (const child of children) {
       if (child instanceof MenuItem) {
-        child.classList.add('nav-menu');
+        continue;
       }
-      else {
-        console.log(`ERROR: found slotted element`,
-          `${child.tagName} in ${this.tagName}`);
-      }
+      console.log(`${this.tagName} ERROR:`,
+        `Found unknown slotted element: ${child.tagName}`);
     }
   }
 
