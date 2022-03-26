@@ -6,17 +6,13 @@ export default class SubMenu extends LitElement {
   };
 
   static styles = css`
-    ul.sub-menu {
+    ul {
       display: none;
       position: absolute;
       top: 4rem;
       background-color: lightblue;
       width: 15rem;
       z-index: 10;
-    }
-    ul.sub-menu li {
-      display: block;
-      position: relative;
     }
   `;
 
@@ -35,7 +31,7 @@ export default class SubMenu extends LitElement {
 
   render () {
     return html`
-      <ul class="sub-menu" id="${this.panelId}">
+      <ul id="${this.panelId}">
         <slot></slot>
       </ul>
     `;
