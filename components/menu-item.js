@@ -19,7 +19,11 @@ export default class MenuItem extends LitElement {
 
   constructor () {
     super();
-    this.disclosurePair = [];
+    this.addEventListener('click', (e) => {
+      if (e.target === this.menuButton) {
+        this.subMenu.toggle(this.menuButton.expanded);
+      }
+    })
   }
 
   get slottedChildren () {
@@ -29,29 +33,21 @@ export default class MenuItem extends LitElement {
 
   firstUpdated () {
     let id;
-    const children = this.slottedChildren;
-    for (const child of children) {
+    for (const child of this.slottedChildren) {
       switch (child.tagName.toLowerCase()) {
         case 'menu-button':
           id = `sub-menu-${MenuItem.counter++}`;
           child.setAttribute('controls', `${id}`);
-          this.disclosurePair.push(child);
+          this.menuButton = child;
           break;
         case 'sub-menu':
           child.setAttribute('panelId', `${id}`);
-          this.disclosurePair.push(child);
+          this.subMenu = child;
           break;
         case 'a':
           child.classList.add('menu-link');
+          this.menuLink = child;
           break;
-      }
-    }
-    if (this.disclosurePair.length === 2) {
-      if (this.disclosurePair[0] instanceof MenuButton) {
-        this.disclosurePair[0].menuItem = this;
-        if (this.disclosurePair[1] instanceof SubMenu) {
-          this.disclosurePair[0].subMenu = this.disclosurePair[1];
-        }
       }
     }
   }

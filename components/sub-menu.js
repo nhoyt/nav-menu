@@ -19,6 +19,11 @@ export default class SubMenu extends LitElement {
     return this.shadowRoot.querySelector('ul');
   }
 
+  toggle (value) {
+    const style = this.subMenuContainer.style;
+    style.display = value ? 'block' : 'none';
+  }
+
   render () {
     return html`
       <ul id="${this.panelId}">

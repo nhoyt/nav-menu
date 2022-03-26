@@ -2,7 +2,8 @@ import {LitElement, html, css} from 'lit';
 
 export default class MenuButton extends LitElement {
   static properties = {
-    controls: {}
+    controls: {},
+    expanded: { state: true, attribute: false }
   };
 
   static styles = css`
@@ -16,29 +17,18 @@ export default class MenuButton extends LitElement {
 
   constructor () {
     super();
+    this.expanded = false;
   }
 
-  set menuItem (element) {
-    this._menuItem = element;
-  }
-
-  get subMenu () {
-    return this._subMenu;
-  }
-
-  set subMenu (element) {
-    this._subMenu = element;
-  }
-
-  toggleSubMenu () {
-    const style = this.subMenu.subMenuContainer.style;
-    console.log(`style.display: ${style.display}`);
-    style.display = style.display === 'none' ? 'block' : 'none';
+  toggle () {
+    this.expanded = !this.expanded;
   }
 
   render () {
     return html`
-      <a href="#" role="button" @click="${this.toggleSubMenu}" aria-controls="${this.controls}" aria-expanded="false">
+      <a href="#" role="button" @click="${this.toggle}"
+        aria-controls="${this.controls}"
+        aria-expanded="${this.expanded}">
         <slot></slot>
       </a>
     `;
