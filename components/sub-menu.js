@@ -15,6 +15,10 @@ export default class SubMenu extends LitElement {
     super();
   }
 
+  get subMenuContainer () {
+    return this.shadowRoot.querySelector('ul');
+  }
+
   render () {
     return html`
       <ul id="${this.panelId}">

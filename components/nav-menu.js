@@ -7,6 +7,10 @@ class NavMenu extends LitElement {
   };
 
   static styles = css`
+    nav {
+      background-color: #ddd;
+      padding: 0.5rem;
+    }
   `;
 
   constructor () {

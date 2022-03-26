@@ -9,19 +9,38 @@ export default class MenuButton extends LitElement {
     [role="button"] {
       text-decoration: none;
     }
+    [role="button"]:visited {
+      color: inherit;
+    }
   `;
 
   constructor () {
     super();
   }
 
-  toggleSubMenu () {
+  set menuItem (element) {
+    this._menuItem = element;
+    console.log(`element: ${element.tagName}`);
+  }
 
+  get subMenu () {
+    return this._subMenu;
+  }
+
+  set subMenu (element) {
+    this._subMenu = element;
+    console.log(`element: ${element.tagName}`);
+  }
+
+  toggleSubMenu () {
+    const style = this.subMenu.subMenuContainer.style;
+    console.log(`style.display: ${style.display}`);
+    style.display = style.display === 'none' ? 'block' : 'none';
   }
 
   render () {
     return html`
-      <a href="#" role="button" aria-controls="${this.controls}" aria-expanded="false">
+      <a href="#" role="button" @click="${this.toggleSubMenu}" aria-controls="${this.controls}" aria-expanded="false">
         <slot></slot>
       </a>
     `;
