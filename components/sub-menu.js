@@ -1,6 +1,10 @@
 import {LitElement, html, css} from 'lit';
 
-class SubMenu extends LitElement {
+export default class SubMenu extends LitElement {
+  static properties = {
+    panelId: {}
+  };
+
   static styles = css`
     ul {
       display: none;
@@ -13,7 +17,7 @@ class SubMenu extends LitElement {
 
   render () {
     return html`
-      <ul>
+      <ul id="${this.panelId}">
         <slot></slot>
       </ul>
     `;

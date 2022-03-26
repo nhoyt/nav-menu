@@ -2,9 +2,9 @@
 <html>
   <head>
     <script type="module" src="components/nav-menu.js"></script>
-    <script type="module" src="components/menu-item.js"></script>
-    <script type="module" src="components/menu-button.js"></script>
-    <script type="module" src="components/sub-menu.js"></script>
+    <!--script type="module" src="components/menu-item.js"></script-->
+    <!--script type="module" src="components/menu-button.js"></script-->
+    <!--script type="module" src="components/sub-menu.js"></script-->
     <style>
       body {
         font-family: 'Open Sans', sans-serif;
@@ -16,6 +16,7 @@
   <body>
 
     <nav-menu label="Site Navigation">
+      <menu-foobar></menu-foobar>
       <menu-item>
         <menu-button>Courses</menu-button>
         <sub-menu>
@@ -39,25 +40,23 @@
       <menu-item>
         <menu-button>Tools</menu-button>
         <sub-menu>
-          <menu-button>Current Tools</menu-button>
-          <sub-menu>
-            <menu-item><a href="#">FAE</a></menu-item>
-            <menu-item><a href="#">AInspector</a></menu-item>
-            <menu-item><a href="#">A11yFirst</a></menu-item>
-            <menu-item><a href="#">Bookmarklets</a></menu-item>
-          </sub-menu>
+          <menu-item>
+            <menu-button>Current Tools</menu-button>
+            <sub-menu>
+              <menu-item><a href="#">FAE</a></menu-item>
+              <menu-item><a href="#">AInspector</a></menu-item>
+              <menu-item><a href="#">A11yFirst</a></menu-item>
+              <menu-item><a href="#">Bookmarklets</a></menu-item>
+            </sub-menu>
+          </menu-item>
           <menu-item><a href="#">SkipTo Script</a></menu-item>
           <menu-item><a href="#">SkipTo Extension</a></menu-item>
           <menu-item><a href="#">Next Generation Tools</a></menu-item>
         </sub-menu>
       </menu-item>
 
-      <menu-item>
-        <menu-button>Universal Design</menu-button>
-      </menu-item>
-      <menu-item>
-        <menu-button>Outreach</menu-button>
-      </menu-item>
+      <menu-item><a href="#">Universal Design</a></menu-item>
+      <menu-item><a href="#">Outreach</a></menu-item>
       <menu-item><a href="#">About</a></menu-item>
     </nav-menu>
 

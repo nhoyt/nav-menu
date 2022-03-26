@@ -1,6 +1,10 @@
 import {LitElement, html, css} from 'lit';
 
-class MenuButton extends LitElement {
+export default class MenuButton extends LitElement {
+  static properties = {
+    controls: {}
+  };
+
   static styles = css`
     [role="button"] {
       text-decoration: none;
@@ -11,9 +15,13 @@ class MenuButton extends LitElement {
     super();
   }
 
+  toggleSubMenu () {
+
+  }
+
   render () {
     return html`
-      <a href="#" role="button">
+      <a href="#" role="button" aria-controls="${this.controls}" aria-expanded="false">
         <slot></slot>
       </a>
     `;
