@@ -9,11 +9,6 @@ export default class MenuItem extends LitElement {
     li {
       display: inline-block;
       list-style: none;
-      background-color: #eee;
-      border-radius: 6px;
-      border:2px solid blue;
-      margin-left: 8px;
-      padding: 4px 8px;
     }
   `;
 
@@ -53,11 +48,7 @@ export default class MenuItem extends LitElement {
   }
 
   render () {
-    return html`
-      <li>
-        <slot></slot>
-      </li>
-    `;
+    return html`<li><slot></slot></li>`;
   }
 }
 

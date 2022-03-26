@@ -7,9 +7,25 @@ class NavMenu extends LitElement {
   };
 
   static styles = css`
+    ul, li, a {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 100%;
+      font: inherit;
+    }
+
     nav {
       background-color: #ddd;
       padding: 0.5rem;
+    }
+
+    ul ::slotted(menu-item) {
+      background-color: #eee;
+      border-radius: 6px;
+      border: 2px solid blue;
+      margin-left: 8px;
+      padding: 4px 8px;
     }
   `;
 
