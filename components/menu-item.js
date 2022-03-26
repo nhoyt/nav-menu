@@ -7,7 +7,7 @@ export default class MenuItem extends LitElement {
 
   static styles = css`
     li {
-      display: inline;
+      display: inline-block;
       list-style: none;
       background-color: #eee;
       border-radius: 6px;

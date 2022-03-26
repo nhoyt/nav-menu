@@ -8,6 +8,11 @@ export default class SubMenu extends LitElement {
   static styles = css`
     ul {
       display: none;
+      position: absolute;
+    }
+    ul li {
+      display: block;
+      position: relative;
     }
   `;
 
