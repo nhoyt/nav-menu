@@ -18,15 +18,16 @@ export default class MenuButton extends LitElement {
   constructor () {
     super();
     this.expanded = false;
+    this.menuItem = null;
   }
 
-  toggle () {
+  toggleExpanded () {
     this.expanded = !this.expanded;
   }
 
   render () {
     return html`
-      <a href="#" role="button" @click="${this.toggle}"
+      <a href="#" role="button" @click="${this.toggleExpanded}"
         aria-controls="${this.controls}"
         aria-expanded="${this.expanded}">
         <slot></slot>

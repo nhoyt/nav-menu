@@ -19,6 +19,7 @@ export default class SubMenu extends ParentMenu(LitElement) {
 
   constructor () {
     super();
+    this.menuItem = null;
   }
 
   get menuContainer () {
