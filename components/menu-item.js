@@ -9,8 +9,8 @@ export default class MenuItem extends LitElement {
     navMenu: {
       attribute: false,
       hasChanged (newVal, oldVal) {
-        // just checking...
-        console.log(`newVal: ${newVal}`);
+        // just confirming ...
+        console.log(`navMenu property: ${newVal}`);
       }
     }
   }
