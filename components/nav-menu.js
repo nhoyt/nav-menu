@@ -1,10 +1,9 @@
 import {LitElement, html, css} from 'lit';
-import MenuItem from './menu-item';
+import ParentMenu from './parent-menu';
 
-class NavMenu extends LitElement {
+class NavMenu extends ParentMenu(LitElement) {
   static properties = {
-    label: {},
-    menuItems: { attribute: false }
+    label: {}
   };
 
   static styles = css`
@@ -32,27 +31,6 @@ class NavMenu extends LitElement {
 
   constructor () {
     super();
-    this.menuItems = [];
-  }
-
-  get slottedChildren () {
-    const slot = this.shadowRoot.querySelector('slot');
-    return slot.assignedElements();
-  }
-
-  firstUpdated () {
-    const children = this.slottedChildren;
-    for (const child of children) {
-      if (child instanceof MenuItem) {
-        child.parentMenu = this;
-        this.menuItems.push(child);
-      }
-      else {
-        console.log(`${this.tagName} ERROR:`,
-          `Unknown slotted element: ${child.tagName}`);
-      }
-    }
-    console.log(`menuItems: ${this.menuItems.length}`);
   }
 
   render () {
