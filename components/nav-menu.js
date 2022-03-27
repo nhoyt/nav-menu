@@ -44,7 +44,7 @@ class NavMenu extends LitElement {
     const children = this.slottedChildren;
     for (const child of children) {
       if (child instanceof MenuItem) {
-        child.navMenu = this;
+        child.parentMenu = this;
         this.menuItems.push(child);
       }
       else {

@@ -6,11 +6,11 @@ export default class MenuItem extends LitElement {
   static counter = 1;
 
   static properties = {
-    navMenu: {
+    parentMenu: {
       attribute: false,
       hasChanged (newVal, oldVal) {
         // just confirming ...
-        console.log(`navMenu property: ${newVal}`);
+        console.log(`parentMenu: ${newVal.tagName}`);
       }
     }
   }

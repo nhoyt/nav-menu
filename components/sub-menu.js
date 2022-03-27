@@ -1,8 +1,10 @@
 import {LitElement, html, css} from 'lit';
+import MenuItem from './menu-item';
 
 export default class SubMenu extends LitElement {
   static properties = {
-    panelId: {}
+    panelId: {},
+    menuItems: { attribute: false }
   };
 
   static styles = css`
@@ -18,6 +20,7 @@ export default class SubMenu extends LitElement {
 
   constructor () {
     super();
+    this.menuItems = [];
   }
 
   get subMenuContainer () {
@@ -27,6 +30,26 @@ export default class SubMenu extends LitElement {
   toggle (value) {
     const style = this.subMenuContainer.style;
     style.display = value ? 'block' : 'none';
+  }
+
+  get slottedChildren () {
+    const slot = this.shadowRoot.querySelector('slot');
+    return slot.assignedElements();
+  }
+
+  firstUpdated () {
+    const children = this.slottedChildren;
+    for (const child of children) {
+      if (child instanceof MenuItem) {
+        child.parentMenu = this;
+        this.menuItems.push(child);
+      }
+      else {
+        console.log(`${this.tagName} ERROR:`,
+          `Unknown slotted element: ${child.tagName}`);
+      }
+    }
+    console.log(`menuItems: ${this.menuItems.length}`);
   }
 
   render () {
