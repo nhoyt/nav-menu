@@ -5,6 +5,16 @@ import SubMenu from './sub-menu';
 export default class MenuItem extends LitElement {
   static counter = 1;
 
+  static properties = {
+    navMenu: {
+      attribute: false,
+      hasChanged (newVal, oldVal) {
+        // just checking...
+        console.log(`newVal: ${newVal}`);
+      }
+    }
+  }
+
   static styles = css`
     li {
       display: inline-block;

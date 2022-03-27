@@ -3,7 +3,8 @@ import MenuItem from './menu-item';
 
 class NavMenu extends LitElement {
   static properties = {
-    label: {}
+    label: {},
+    menuItems: { attribute: false }
   };
 
   static styles = css`
@@ -31,6 +32,7 @@ class NavMenu extends LitElement {
 
   constructor () {
     super();
+    this.menuItems = [];
   }
 
   get slottedChildren () {
@@ -42,11 +44,15 @@ class NavMenu extends LitElement {
     const children = this.slottedChildren;
     for (const child of children) {
       if (child instanceof MenuItem) {
-        continue;
+        child.navMenu = this;
+        this.menuItems.push(child);
       }
-      console.log(`${this.tagName} ERROR:`,
-        `Found unknown slotted element: ${child.tagName}`);
+      else {
+        console.log(`${this.tagName} ERROR:`,
+          `Unknown slotted element: ${child.tagName}`);
+      }
     }
+    console.log(`menuItems: ${this.menuItems.length}`);
   }
 
   render () {
