@@ -13,11 +13,11 @@ export default class MenuItem extends LitElement {
     li {
       display: inline-block;
       list-style: none;
+      white-space: nowrap;
     }
     li.submenu {
       margin: 0;
       padding: 6px;
-      white-space: nowrap;
     }
   `;
 
