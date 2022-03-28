@@ -1,4 +1,5 @@
-import {LitElement, html, css} from 'lit';
+import {LitElement, ReactiveElement, html, css} from 'lit';
+import DebugController from './debug-controller';
 import MenuButton from './menu-button';
 import SubMenu    from './sub-menu';
 
@@ -26,6 +27,7 @@ export default class MenuItem extends LitElement {
     this.menuButton = null;
     this.subMenu    = null;
     this.menuLink   = null;
+    this.debug = new DebugController(this, true);
 
     this.addEventListener('click', (e) => {
       switch (e.target) {
