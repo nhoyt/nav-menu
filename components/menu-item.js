@@ -14,6 +14,11 @@ export default class MenuItem extends LitElement {
       display: inline-block;
       list-style: none;
     }
+    li.submenu {
+      margin: 0;
+      padding: 6px;
+      white-space: nowrap;
+    }
   `;
 
   constructor () {
@@ -95,8 +100,12 @@ export default class MenuItem extends LitElement {
     this.closeOtherSubMenus(this.navMenu.menuItems);
   }
 
+  get className () {
+    return (this.parentMenu instanceof SubMenu) ? 'submenu' : 'navmenu';
+  }
+
   render () {
-    return html`<li><slot></slot></li>`;
+    return html`<li class="${this.className}"><slot></slot></li>`;
   }
 }
 

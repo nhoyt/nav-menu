@@ -10,10 +10,15 @@ export default class SubMenu extends ParentMenu(LitElement) {
     ul {
       display: none;
       position: absolute;
-      top: 4rem;
-      background-color: lightblue;
-      width: 15rem;
+      top: 35px;
+      background-color: #eee;
+      padding: 0.5rem;
       z-index: 10;
+    }
+    .show {
+      display: grid;
+      grid-template-rows: auto;
+      grid-template-columns: 1;
     }
   `;
 
@@ -27,8 +32,13 @@ export default class SubMenu extends ParentMenu(LitElement) {
   }
 
   toggle (value) {
-    const style = this.menuContainer.style;
-    style.display = value ? 'block' : 'none';
+    const ul = this.menuContainer;
+    if (value) {
+      ul.classList.add('show');
+    }
+    else {
+      ul.classList.remove('show');
+    }
   }
 
   render () {
