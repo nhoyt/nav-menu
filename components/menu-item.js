@@ -29,7 +29,7 @@ export default class MenuItem extends LitElement {
           this.closeOtherSubMenus(this.parentMenu.menuItems, this);
           break;
         case this.menuLink:
-          this.closeAllSubMenus(this.navMenu.menuItems);
+          this.closeAllSubMenus();
           break;
       }
     })
@@ -91,13 +91,8 @@ export default class MenuItem extends LitElement {
     }
   }
 
-  closeAllSubMenus (menuItems) {
-    for (const menuItem of menuItems) {
-      menuItem.closeSubMenu();
-      if (menuItem.subMenu) {
-        this.closeAllSubMenus(menuItem.subMenu.menuItems);
-      }
-    }
+  closeAllSubMenus () {
+    this.closeOtherSubMenus(this.navMenu.menuItems);
   }
 
   render () {
