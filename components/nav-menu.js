@@ -16,12 +16,12 @@ class NavMenu extends ParentMenu(LitElement) {
     }
 
     nav {
-      background-color: #ddd;
+      background-color: #eee;
       padding: 0.5rem;
     }
 
     ul ::slotted(menu-item) {
-      background-color: #eee;
+      background-color: #fff;
       border-radius: 6px;
       border: 2px solid blue;
       margin-left: 8px;
