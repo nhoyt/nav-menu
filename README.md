@@ -168,8 +168,8 @@ otherwise is empty, i.e. it has no text or element content.
 
 ## Styling / Implementation Notes
 
-* When a `menu-item` is a descendant of `nav-menu`, it is styled differently
-  than when it is a descendant of a `sub-menu`.
+* When a `menu-item` is a child of `nav-menu`, it is styled differently
+  than when it is a child of a `sub-menu`.
 
 ### nav-menu
 

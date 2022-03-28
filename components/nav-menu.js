@@ -3,8 +3,6 @@ import DebugController from './debug-controller';
 import ParentMenu from './parent-menu';
 
 class NavMenu extends ParentMenu(LitElement) {
-  static openMenus;
-
   static properties = {
     label: {}
   };
@@ -34,7 +32,6 @@ class NavMenu extends ParentMenu(LitElement) {
 
   constructor () {
     super();
-    this.openMenus = [];
     this.debug = new DebugController(this, true);
   }
 

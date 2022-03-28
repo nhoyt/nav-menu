@@ -27,7 +27,6 @@ export default class MenuItem extends LitElement {
     this.menuButton = null;
     this.subMenu    = null;
     this.menuLink   = null;
-    this.debug = new DebugController(this, true);
 
     this.addEventListener('click', (e) => {
       switch (e.target) {
@@ -39,7 +38,9 @@ export default class MenuItem extends LitElement {
           this.closeAllSubMenus();
           break;
       }
-    })
+    });
+
+    this.debug = new DebugController(this, true);
   }
 
   get slottedChildren () {
