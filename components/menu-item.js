@@ -82,10 +82,10 @@ export default class MenuItem extends LitElement {
 
   closeOtherSubMenus (menuItems, excludeItem) {
     for (const menuItem of menuItems) {
-      if (menuItem != excludeItem) {
+      if (menuItem !== excludeItem) {
         menuItem.closeSubMenu();
         if (menuItem.subMenu) {
-          this.closeOtherSubMenus (menuItem.subMenu.menuItems, excludeItem);
+          this.closeOtherSubMenus(menuItem.subMenu.menuItems, excludeItem);
         }
       }
     }
