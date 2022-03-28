@@ -1,18 +1,12 @@
 import {LitElement, html, css} from 'lit';
 import MenuButton from './menu-button';
-import SubMenu from './sub-menu';
+import SubMenu    from './sub-menu';
 
 export default class MenuItem extends LitElement {
   static counter = 1;
 
   static properties = {
-    parentMenu: {
-      attribute: false,
-      hasChanged (newVal, oldVal) {
-        // just confirming ...
-        console.log(`parentMenu: ${newVal.tagName}`);
-      }
-    }
+    parentMenu: { attribute: false }
   }
 
   static styles = css`
@@ -24,9 +18,19 @@ export default class MenuItem extends LitElement {
 
   constructor () {
     super();
+    this.menuButton = null;
+    this.subMenu    = null;
+    this.menuLink   = null;
+
     this.addEventListener('click', (e) => {
-      if (e.target === this.menuButton) {
-        this.subMenu.toggle(this.menuButton.expanded);
+      switch (e.target) {
+        case this.menuButton:
+          this.subMenu.toggle(this.menuButton.expanded);
+          this.closeOtherSubMenus(this.parentMenu.menuItems, this);
+          break;
+        case this.menuLink:
+          this.closeAllSubMenus(this.navMenu.menuItems);
+          break;
       }
     })
   }
@@ -39,6 +43,10 @@ export default class MenuItem extends LitElement {
   firstUpdated () {
     let id;
     for (const child of this.slottedChildren) {
+      // Connect the slotted element to its parent MenuItem
+      child.menuItem = this;
+
+      // Initialize attributes and other MenuItem properties
       switch (child.tagName.toLowerCase()) {
         case 'menu-button':
           id = `sub-menu-${MenuItem.counter++}`;
@@ -53,6 +61,41 @@ export default class MenuItem extends LitElement {
           child.classList.add('menu-link');
           this.menuLink = child;
           break;
+      }
+    }
+  }
+
+  get navMenu () {
+    let parentMenu = this.parentMenu;
+    while (parentMenu instanceof SubMenu) {
+      parentMenu = parentMenu.menuItem.parentMenu;
+    }
+    return parentMenu;
+  }
+
+  closeSubMenu () {
+    if (this.menuButton && this.subMenu) {
+      this.menuButton.expanded = false;
+      this.subMenu.toggle(false);
+    }
+  }
+
+  closeOtherSubMenus (menuItems, excludeItem) {
+    for (const menuItem of menuItems) {
+      if (menuItem != excludeItem) {
+        menuItem.closeSubMenu();
+        if (menuItem.subMenu) {
+          this.closeOtherSubMenus (menuItem.subMenu.menuItems, excludeItem);
+        }
+      }
+    }
+  }
+
+  closeAllSubMenus (menuItems) {
+    for (const menuItem of menuItems) {
+      menuItem.closeSubMenu();
+      if (menuItem.subMenu) {
+        this.closeAllSubMenus(menuItem.subMenu.menuItems);
       }
     }
   }
