@@ -26,11 +26,11 @@ export default function ParentMenu (superClass) {
           this.menuItems.push(child);
         }
         else {
-          console.log(`${this.tagName} ERROR:`,
+          console.warn(`In ${this.tagName} component:`,
             `Unknown slotted element: ${child.tagName}`);
         }
       }
-      console.log(`menuItems: ${this.menuItems.length}`);
+      console.log(`${this.tagName} menuItems: ${this.menuItems.length}`);
     }
   }
 }
