@@ -1,5 +1,7 @@
 import MenuItem from './menu-item';
 
+const debug = { log: false, warn: false };
+
 // Class mixin for keeping track of slotted MenuItem elements
 
 export default function ParentMenu (superClass) {
@@ -26,11 +28,15 @@ export default function ParentMenu (superClass) {
           this.menuItems.push(child);
         }
         else {
-          console.warn(`In ${this.tagName} component:`,
-            `Unknown slotted element: ${child.tagName}`);
+          if (debug.warn) {
+            console.warn(`In ${this.tagName} component:`,
+              `Unknown slotted element: ${child.tagName}`);
+          }
         }
       }
-      console.log(`${this.tagName} menuItems: ${this.menuItems.length}`);
+      if (debug.log) {
+        console.log(`${this.tagName} menuItems: ${this.menuItems.length}`);
+      }
     }
   }
 }

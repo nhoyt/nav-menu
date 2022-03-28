@@ -78,20 +78,22 @@ export default class MenuItem extends LitElement {
     return parentMenu;
   }
 
-  closeSubMenu () {
-    if (this.menuButton && this.subMenu) {
-      this.menuButton.expanded = false;
-      this.subMenu.toggle(false);
+  hasSubMenu (menuItem) {
+    return menuItem.menuButton && menuItem.subMenu && menuItem.subMenu.menuItems;
+  }
+
+  closeSubMenu (menuItem, excludeItem) {
+    if (this.hasSubMenu(menuItem) && (menuItem !== excludeItem)) {
+      menuItem.menuButton.expanded = false;
+      menuItem.subMenu.toggle(false);
     }
   }
 
   closeOtherSubMenus (menuItems, excludeItem) {
     for (const menuItem of menuItems) {
-      if (menuItem !== excludeItem) {
-        menuItem.closeSubMenu();
-        if (menuItem.subMenu) {
-          this.closeOtherSubMenus(menuItem.subMenu.menuItems, excludeItem);
-        }
+      if (this.hasSubMenu(menuItem)) {
+        this.closeOtherSubMenus(menuItem.subMenu.menuItems, excludeItem);
+        this.closeSubMenu(menuItem, excludeItem);
       }
     }
   }
