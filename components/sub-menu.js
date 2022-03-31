@@ -1,4 +1,5 @@
-import {LitElement, html, css} from 'lit';
+import { LitElement, html } from 'lit';
+import { subMenuCss } from './styles.css';
 import ParentMenu from './parent-menu';
 
 export default class SubMenu extends ParentMenu(LitElement) {
@@ -6,21 +7,7 @@ export default class SubMenu extends ParentMenu(LitElement) {
     panelId: {}
   };
 
-  static styles = css`
-    ul {
-      display: none;
-      position: absolute;
-      top: 35px;
-      background-color: #eee;
-      padding: 0.5rem;
-      z-index: 10;
-    }
-    .show {
-      display: grid;
-      grid-template-rows: auto;
-      grid-template-columns: 1;
-    }
-  `;
+  static styles = subMenuCss;
 
   constructor () {
     super();

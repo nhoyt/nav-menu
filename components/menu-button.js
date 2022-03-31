@@ -1,4 +1,5 @@
-import {LitElement, html, css} from 'lit';
+import { LitElement, html } from 'lit';
+import { menuButtonCss } from './styles.css';
 
 export default class MenuButton extends LitElement {
   static properties = {
@@ -6,14 +7,7 @@ export default class MenuButton extends LitElement {
     expanded: { state: true, attribute: false }
   };
 
-  static styles = css`
-    [role="button"] {
-      text-decoration: none;
-    }
-    [role="button"]:visited {
-      color: inherit;
-    }
-  `;
+  static styles = menuButtonCss;
 
   constructor () {
     super();

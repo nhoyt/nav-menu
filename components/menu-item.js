@@ -1,26 +1,17 @@
-import {LitElement, ReactiveElement, html, css} from 'lit';
+import { LitElement, ReactiveElement, html } from 'lit';
+import { menuItemCss } from './styles.css';
 import DebugController from './debug-controller';
 import MenuButton from './menu-button';
-import SubMenu    from './sub-menu';
+import SubMenu from './sub-menu';
 
 export default class MenuItem extends LitElement {
+  // class properties
   static counter = 1;
 
-  static properties = {
-    parentMenu: { attribute: false }
-  }
+  // instance properties
+  parentMenu;
 
-  static styles = css`
-    li {
-      display: inline-block;
-      list-style: none;
-      white-space: nowrap;
-    }
-    li.submenu {
-      margin: 0;
-      padding: 6px;
-    }
-  `;
+  static styles = menuItemCss;
 
   constructor () {
     super();
